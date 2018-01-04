@@ -1,13 +1,78 @@
-const service = require("./service")
+const readline = require('readline');
+const service = require('./service')
 
+var listerTousLesPresentateurs = function () {
+    var tousLesPresentateurs = service.listerTousLesPresentateurs()
+    tousLesPresentateurs.forEach((element, index, array) =>
+        console.log(element.firstname)
+    )
+}
 
-console.log(service.filtrerTopPresentateurs())
-console.log(service.listerTousLesPresentateurs())
-console.log(service.listerToutesLesSessions())
-console.log(service.trouverUneSession())
+var listerTopPresentateurs = function () {
+    var topPresentateurs = service.filtrerTopPresentateurs()
+    topPresentateurs.forEach((element, index, array) =>
+        console.log(element.firstname)
+    )
+}
 
-console.log("*** Application Conférence ***\n"
-    + "1. Liste de tous les présentateurs 1\n"
-    + "2. Top présentateurs 2\n"
-    + "3. Liste des sessions 3\n"
-    + "4. Détail d'une session")
+var listerToutesLesSessions = function () {
+    var toutesLesSessions = service.listerToutesLesSessions()
+    toutesLesSessions.forEach((element, index, array) =>
+        console.log(element.title)
+    )
+}
+
+var trouverUneSession = function (idSession) {
+    var uneSession = service.trouverUneSession(idSession)
+    console.log(uneSession)
+}
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: 'PROMPT> '
+});
+
+var menu = function () {
+    console.log('*** Application Conférence ***');
+    console.log('1. Liste de tous les présentateurs');
+    console.log('2. Top présentateurs');
+    console.log('3. Liste des sessions');
+    console.log('4. Détail d\'une session');
+}
+
+menu();
+rl.prompt();
+
+rl.on('line', (line) => {
+    switch (line.trim()) {
+        case '1':
+            listerTousLesPresentateurs();
+            menu();
+            rl.prompt();
+            break;
+        case '2':
+            listerTopPresentateurs();
+            menu();
+            rl.prompt();
+            break;
+        case '3':
+            listerToutesLesSessions();
+            menu();
+            rl.prompt();
+            break;
+        case '4':
+            rl.question('Choisir un idSession>>', (answer) => {
+                trouverUneSession(answer);
+                menu();
+                rl.prompt();
+            });
+            break;
+        default:
+            console.log('Option invalide');
+            break;
+    }
+}).on('close', () => {
+    console.log('Have a great day!');
+    process.exit(0);
+});

@@ -9,13 +9,11 @@ function listerToutesLesSessions() {
 }
 
 function trouverUneSession(idSession) {
-    var ses = data.sessions.findIndex(s => s.id == idSession)
-    return data.sessions[ses]
+    return data.sessions.filter((element, index, array) => element.id == idSession)
 }
 
 function filtrerTopPresentateurs() {
-    var pre = data.speakers.findIndex(t => t.topspeaker = true)
-    return data.speakers[pre]
+    return data.speakers.filter((element, index, array) => element.topspeaker == true)
 }
 
 exports.listerTousLesPresentateurs = listerTousLesPresentateurs
